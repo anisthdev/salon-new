@@ -43,10 +43,10 @@ export const Header = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <motion.div
-              className="flex-shrink-0"
+              className="flex-shrink min-w-0 mr-2"
               whileHover={{ scale: 1.05 }}
             >
-              <a href="#" className="text-2xl font-serif font-bold text-amber-700 dark:text-amber-400">
+              <a href="#" className="text-base sm:text-lg md:text-2xl font-serif font-bold text-amber-700 dark:text-amber-400 leading-tight break-words max-w-xs sm:max-w-none">
                 {displayName}
               </a>
             </motion.div>

@@ -1,13 +1,18 @@
 import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { salonConfig } from '../config/salonConfig';
+import { formatSalonName } from '../utils/salonNameFormatter';
 
 export const Hero = () => {
   const { t } = useLanguage();
+  const { salonName } = useParams();
+
+  const displayName = salonName ? formatSalonName(salonName) : salonConfig.businessInfo.name;
 
   const whatsappMessage = salonConfig.whatsappTemplate.replace(
     '{salonName}',
-    salonConfig.businessInfo.name
+    displayName
   );
 
   const whatsappUrl = `https://wa.me/${salonConfig.businessInfo.whatsappNumber}?text=${encodeURIComponent(
@@ -53,7 +58,7 @@ export const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {salonConfig.businessInfo.name}
+            {displayName}
           </motion.h1>
 
           {/* Tagline */}
