@@ -4,7 +4,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { salonConfig } from '../config/salonConfig';
 
 export const WorkingHours = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -70,7 +70,7 @@ export const WorkingHours = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                 >
-                  EXTRA DISCOUNT
+                  {t('common.extraDiscount')}
                 </motion.div>
               )}
 

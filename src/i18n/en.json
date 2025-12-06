@@ -10,7 +10,10 @@
     "viewAll": "View All",
     "close": "Close",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "view": "View",
+    "chatOnWhatsapp": "Chat on WhatsApp",
+    "extraDiscount": "EXTRA DISCOUNT"
   },
   "header": {
     "home": "Home",
@@ -21,6 +24,7 @@
   },
   "hero": {
     "tagline": "Where Beauty Meets Artistry",
+    "subtitle": "Experience luxury beauty treatments tailored just for you",
     "cta1": "Book on WhatsApp",
     "cta2": "View Services"
   },

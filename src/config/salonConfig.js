@@ -118,7 +118,7 @@ export const salonConfig = {
     {
       id: 2,
       name: "Anjali Verma",
-      rating: 5,
+      rating: 4.5,
       text: {
         en: "Best haircut I've ever had! The stylists really understand hair and provide great advice.",
         hi: "मेरा सबसे अच्छा हेयरकट! स्टाइलिस्ट वास्तव में बालों को समझते हैं और बहुत अच्छी सलाह देते हैं।",

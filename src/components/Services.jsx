@@ -2,8 +2,15 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../hooks/useLanguage';
 import { salonConfig } from '../config/salonConfig';
 
+const getServiceContent = (service, language) => {
+  return {
+    name: language === 'hi' ? service.name.hi : service.name.en,
+    description: language === 'hi' ? service.description.hi : service.description.en,
+  };
+};
+
 export const Services = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
 
   // Map services to images
   const serviceImageMap = {
@@ -123,10 +130,10 @@ export const Services = () => {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-xl md:text-2xl font-serif font-bold text-white mb-2">
-                    {service.name.en}
+                    {getServiceContent(service, currentLanguage).name}
                   </h3>
                   <p className="text-rose-100 text-sm md:text-base mb-3 line-clamp-2">
-                    {service.description.en}
+                    {getServiceContent(service, currentLanguage).description}
                   </p>
                   <div className="flex items-center justify-between">
                     <p className="text-rose-300 font-bold text-lg">

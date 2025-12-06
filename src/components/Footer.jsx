@@ -85,7 +85,7 @@ export const Footer = () => {
                     className="text-gray-400 hover:text-amber-400 transition-colors"
                     whileHover={{ x: 4 }}
                   >
-                    {link.label}
+                    {t(link.label)}
                   </motion.a>
                 </li>
               ))}

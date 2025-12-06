@@ -171,7 +171,7 @@ export const Gallery = () => {
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"
                       />
                     </svg>
-                    <p className="text-sm font-medium mt-2">View</p>
+                    <p className="text-sm font-medium mt-2">{t('common.view')}</p>
                   </motion.div>
                 </motion.div>
 

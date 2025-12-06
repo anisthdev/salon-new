@@ -1,44 +1,107 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { salonConfig } from '../config/salonConfig';
 
+const getTestimonialContent = (testimonial, language) => {
+  return {
+    text: language === 'hi' ? testimonial.text.hi : testimonial.text.en,
+    service: language === 'hi' ? testimonial.service.hi : testimonial.service.en,
+  };
+};
+
+const StarRating = ({ rating }) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+
+  return (
+    <div className="flex gap-1">
+      {Array.from({ length: fullStars }).map((_, i) => (
+        <Star key={`full-${i}`} size={16} className="fill-yellow-400 text-yellow-400" />
+      ))}
+      {hasHalfStar && (
+        <div key="half" className="relative">
+          <Star size={16} className="text-yellow-400" />
+          <div className="absolute inset-0 overflow-hidden w-1/2">
+            <Star size={16} className="fill-yellow-400 text-yellow-400" />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Testimonials = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
+  const [viewportWidth, setViewportWidth] = useState(0);
+  const [cardHeight, setCardHeight] = useState(0);
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+
+  // Duplicate testimonials for infinite seamless scrolling
+  const extendedTestimonials = [
+    ...salonConfig.testimonials,
+    ...salonConfig.testimonials,
+  ];
+  const totalCards = extendedTestimonials.length;
+
+  // Responsive card width with viewport constraints
+  let cardWidth = 280;
+  if (viewportWidth >= 768) cardWidth = 300;
+  if (viewportWidth >= 1024) cardWidth = 320;
+
+  // Ensure card doesn't exceed 90% of viewport on small screens
+  if (viewportWidth < 600) {
+    cardWidth = Math.min(cardWidth, viewportWidth * 0.85);
+  }
 
   useEffect(() => {
-    if (!autoplay) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % totalCards);
+    }, 3000);
 
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) =>
-        prev === salonConfig.testimonials.length - 1 ? 0 : prev + 1
-      );
-    }, 5000);
+    return () => clearInterval(timer);
+  }, [totalCards]);
 
-    return () => clearInterval(interval);
-  }, [autoplay]);
+  // Measure container width on mount and resize
+  useEffect(() => {
+    const measureWidth = () => {
+      if (containerRef.current) {
+        setViewportWidth(containerRef.current.offsetWidth);
+      }
+    };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev === salonConfig.testimonials.length - 1 ? 0 : prev + 1
-    );
-    setAutoplay(false);
-  };
+    measureWidth();
+    window.addEventListener('resize', measureWidth);
+    return () => window.removeEventListener('resize', measureWidth);
+  }, []);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? salonConfig.testimonials.length - 1 : prev - 1
-    );
-    setAutoplay(false);
-  };
+  // Measure card height for proper container sizing
+  useEffect(() => {
+    const measureCardHeight = () => {
+      if (cardRef.current) {
+        setCardHeight(cardRef.current.offsetHeight);
+      }
+    };
 
-  // Get testimonials in carousel order (show 4: 1 before, center, 2 after)
-  const getCarouselIndex = (offset) => {
-    return (currentIndex + offset + salonConfig.testimonials.length) % salonConfig.testimonials.length;
-  };
+    // Measure after a small delay to ensure card is rendered
+    const timer = setTimeout(measureCardHeight, 100);
+    window.addEventListener('resize', measureCardHeight);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measureCardHeight);
+    };
+  }, [cardWidth]);
+
+  const gap = 24; // gap-6 = 24px
+  const cardWithGap = cardWidth + gap;
+
+  // Calculate offset to center the current testimonial in the viewport
+  const cardPosition = currentIndex * cardWithGap;
+  const offset = viewportWidth / 2 - cardPosition - cardWidth / 2;
 
   return (
     <section className="section-padding bg-white dark:bg-gray-800 transition-colors duration-300">
@@ -59,190 +122,70 @@ export const Testimonials = () => {
           </p>
         </motion.div>
 
-        {/* Testimonial Carousel - Multiple Cards */}
-        <div
-          className="flex items-center justify-center gap-4 md:gap-6 px-4 overflow-hidden"
-          onMouseEnter={() => setAutoplay(false)}
-          onMouseLeave={() => setAutoplay(true)}
-        >
-          {/* Left Card */}
-          {salonConfig.testimonials.length > 0 && (
-            <motion.div
-              className="flex-shrink-0 w-40 bg-white dark:bg-gray-700 rounded-2xl p-5 hidden md:block"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <motion.img
-                src={salonConfig.testimonials[getCarouselIndex(-1)].avatar}
-                alt="Testimonial"
-                className="w-10 h-10 rounded-full object-cover mb-3 mx-auto"
-              />
-              <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-3 mb-3">
-                "{salonConfig.testimonials[getCarouselIndex(-1)].text.en}"
-              </p>
-              <p className="font-display text-sm text-rose-600 dark:text-rose-400">
-                {salonConfig.testimonials[getCarouselIndex(-1)].name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {salonConfig.testimonials[getCarouselIndex(-1)].service.en}
-              </p>
-            </motion.div>
-          )}
-
-          {/* Center Featured Card */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              className="flex-shrink-0 w-full md:w-96 bg-gradient-to-b from-gray-700 to-gray-800 dark:from-gray-900 dark:to-gray-950 rounded-3xl overflow-hidden shadow-2xl"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4 }}
-              whileHover={{ boxShadow: '0 30px 60px rgba(225, 29, 72, 0.2)' }}
-            >
-              {/* Featured Image */}
-              <div className="relative h-80 md:h-96 overflow-hidden">
-                <motion.img
-                  src={salonConfig.testimonials[currentIndex].avatar}
-                  alt={salonConfig.testimonials[currentIndex].name}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-
-                {/* Play Button */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  whileHover={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <div className="w-0 h-0 border-l-8 border-l-white border-t-5 border-t-transparent border-b-5 border-b-transparent ml-1" />
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Card Content */}
-              <div className="p-6 md:p-8 text-white">
-                <motion.div
-                  className="flex gap-3 mb-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {Array.from({ length: salonConfig.testimonials[currentIndex].rating }).map((_, i) => (
-                    <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
-                  ))}
-                </motion.div>
-
-                <motion.p
-                  className="text-sm md:text-base mb-4 leading-relaxed"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  "{salonConfig.testimonials[currentIndex].text.en}"
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <p className="font-display text-xl text-white mb-1">
-                    {salonConfig.testimonials[currentIndex].name}
-                  </p>
-                  <p className="text-sm text-gray-300">
-                    {salonConfig.testimonials[currentIndex].service.en}
-                  </p>
-                </motion.div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Right Card */}
-          {salonConfig.testimonials.length > 0 && (
-            <motion.div
-              className="flex-shrink-0 w-40 bg-white dark:bg-gray-700 rounded-2xl p-5 hidden md:block"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <motion.img
-                src={salonConfig.testimonials[getCarouselIndex(1)].avatar}
-                alt="Testimonial"
-                className="w-10 h-10 rounded-full object-cover mb-3 mx-auto"
-              />
-              <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-3 mb-3">
-                "{salonConfig.testimonials[getCarouselIndex(1)].text.en}"
-              </p>
-              <p className="font-display text-sm text-rose-600 dark:text-rose-400">
-                {salonConfig.testimonials[getCarouselIndex(1)].name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {salonConfig.testimonials[getCarouselIndex(1)].service.en}
-              </p>
-            </motion.div>
-          )}
-
-          {/* Right Arrow - Mobile */}
-          <motion.button
-            onClick={handleNext}
-            className="md:hidden flex-shrink-0"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
+        {/* Testimonials Carousel Container */}
+        <div className="flex justify-center w-full">
+          <div
+            ref={containerRef}
+            className="w-full max-w-6xl py-8"
+            style={{
+              overflow: 'hidden',
+              minHeight: cardHeight ? `${cardHeight * 1.05 + 64}px` : 'auto'
+            }}
           >
-            <ChevronRight className="text-gray-700 dark:text-gray-300 w-8 h-8" />
-          </motion.button>
-        </div>
+            <motion.div
+              className="flex gap-6 px-4"
+              animate={{ x: offset }}
+              transition={{
+                type: 'spring',
+                stiffness: 100,
+                damping: 15,
+                duration: 0.6,
+              }}
+            >
+              {extendedTestimonials.map((testimonial, index) => {
+                const isCenter = index === currentIndex;
+                const isFirstCard = index === 0;
+                return (
+                  <motion.div
+                    key={`${testimonial.id}-${index}`}
+                    ref={isFirstCard ? cardRef : null}
+                    className="flex-shrink-0 bg-white dark:bg-gray-700 rounded-2xl p-6 md:p-8 shadow-lg border border-rose-200 dark:border-rose-800/30"
+                    style={{ width: cardWidth }}
+                    animate={{
+                      scale: isCenter ? 1.05 : 0.95,
+                      opacity: isCenter ? 1 : 0.6,
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 100,
+                      damping: 15,
+                      duration: 0.6,
+                    }}
+                  >
+                    {/* Rating Stars */}
+                    <div className="mb-4">
+                      <StarRating rating={testimonial.rating} />
+                    </div>
 
-        {/* Navigation Controls */}
-        <div className="flex items-center justify-center gap-6 mt-10">
-          {/* Arrow Buttons */}
-          <motion.button
-            onClick={handlePrev}
-            className="p-3 hover:bg-rose-100 dark:hover:bg-rose-900/30 rounded-full transition-colors"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-            title="Previous"
-          >
-            <ChevronLeft className="text-rose-600 dark:text-rose-400 w-6 h-6" />
-          </motion.button>
+                    {/* Testimonial Text */}
+                    <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed text-sm md:text-base line-clamp-4">
+                      "{getTestimonialContent(testimonial, currentLanguage).text}"
+                    </p>
 
-          {/* Navigation Dots */}
-          <div className="flex gap-2">
-            {salonConfig.testimonials.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setAutoplay(false);
-                }}
-                className={`rounded-full transition-all ${
-                  index === currentIndex
-                    ? 'bg-rose-500 w-8 h-3'
-                    : 'bg-gray-300 dark:bg-gray-600 w-3 h-3'
-                }`}
-                whileHover={{ scale: 1.2 }}
-              />
-            ))}
+                    {/* Testimonial Author */}
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white">
+                        {testimonial.name}
+                      </p>
+                      <p className="text-rose-600 dark:text-rose-400 text-sm">
+                        {getTestimonialContent(testimonial, currentLanguage).service}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </div>
-
-          {/* Arrow Buttons */}
-          <motion.button
-            onClick={handleNext}
-            className="p-3 hover:bg-rose-100 dark:hover:bg-rose-900/30 rounded-full transition-colors"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-            title="Next"
-          >
-            <ChevronRight className="text-rose-600 dark:text-rose-400 w-6 h-6" />
-          </motion.button>
         </div>
       </div>
     </section>

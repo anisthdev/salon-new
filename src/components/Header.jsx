@@ -1,14 +1,19 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../hooks/useLanguage';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { salonConfig } from '../config/salonConfig';
+import { formatSalonName } from '../utils/salonNameFormatter';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDark, toggleDarkMode] = useDarkMode();
-  const { toggleLanguage, currentLanguage } = useLanguage();
+  const { t, toggleLanguage, currentLanguage } = useLanguage();
+  const { salonName } = useParams();
+
+  const displayName = salonName ? formatSalonName(salonName) : salonConfig.businessInfo.name;
 
   const navLinks = [
     { label: 'header.home', href: '#home' },
@@ -42,7 +47,7 @@ export const Header = () => {
               whileHover={{ scale: 1.05 }}
             >
               <a href="#" className="text-2xl font-serif font-bold text-amber-700 dark:text-amber-400">
-                {salonConfig.businessInfo.name}
+                {displayName}
               </a>
             </motion.div>
 
@@ -56,7 +61,7 @@ export const Header = () => {
                   className="text-gray-700 dark:text-gray-300 hover:text-rose-500 dark:hover:text-rose-400 transition-colors font-medium"
                   whileHover={{ y: -2 }}
                 >
-                  {link.label}
+                  {t(link.label)}
                 </motion.a>
               ))}
             </nav>
@@ -142,7 +147,7 @@ export const Header = () => {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: i * 0.1 }}
                     >
-                      {link.label}
+                      {t(link.label)}
                     </motion.a>
                   ))}
                 </div>

@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
+import { useLanguage } from '../hooks/useLanguage';
 import { salonConfig } from '../config/salonConfig';
 
 export const WhatsAppButton = () => {
+  const { t } = useLanguage();
   const whatsappMessage = salonConfig.whatsappTemplate.replace(
     '{salonName}',
     salonConfig.businessInfo.name
@@ -22,7 +24,7 @@ export const WhatsAppButton = () => {
       whileTap={{ scale: 0.95 }}
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-      title="Chat on WhatsApp"
+      title={t('common.chatOnWhatsapp')}
     >
       <MessageCircle size={28} />
     </motion.a>
