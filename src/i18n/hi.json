@@ -1,0 +1,69 @@
+{
+  "common": {
+    "language": "HI",
+    "languageToggle": "EN",
+    "darkMode": "डार्क मोड",
+    "lightMode": "लाइट मोड",
+    "getDirections": "दिशा प्राप्त करें",
+    "bookOnWhatsapp": "WhatsApp पर बुक करें",
+    "messageUs": "हमें संदेश करें",
+    "viewAll": "सभी देखें",
+    "close": "बंद करें",
+    "next": "अगला",
+    "previous": "पिछला"
+  },
+  "header": {
+    "home": "होम",
+    "services": "सेवाएं",
+    "gallery": "गैलरी",
+    "contact": "संपर्क",
+    "logo": "एलिगेंस ब्यूटी लाउंज"
+  },
+  "hero": {
+    "tagline": "जहां सुंदरता कला से मिलती है",
+    "cta1": "WhatsApp पर बुक करें",
+    "cta2": "सेवाएं देखें"
+  },
+  "services": {
+    "title": "हमारी सेवाएं",
+    "subtitle": "आपके लिए विशेष रूप से तैयार की गई विलासितापूर्ण सौंदर्य सेवाओं का अनुभव लें",
+    "viewAll": "सभी सेवाएं और मूल्य देखें",
+    "bookNow": "अभी बुक करें"
+  },
+  "gallery": {
+    "title": "हमारा काम",
+    "subtitle": "रूपांतरकारी सौंदर्य सेवाओं का हमारा संग्रह देखें",
+    "lightbox": "गैलरी"
+  },
+  "workingHours": {
+    "title": "कार्य समय",
+    "mondayToSaturday": "सोमवार - शनिवार",
+    "sunday": "रविवार"
+  },
+  "testimonials": {
+    "title": "हमारे ग्राहक क्या कहते हैं",
+    "subtitle": "वास्तविक ग्राहकों से वास्तविक समीक्षाएं"
+  },
+  "location": {
+    "title": "हमें देखें",
+    "subtitle": "नक्शे पर हमें आसानी से खोजें",
+    "address": "पता",
+    "phone": "फोन",
+    "email": "ईमेल",
+    "getDirections": "मानचित्र पर दिशा प्राप्त करें"
+  },
+  "contact": {
+    "title": "हमसे संपर्क करें",
+    "description": "कोई सवाल है? हमसे WhatsApp पर संपर्क करें या सीधे कॉल करें",
+    "whatsappCta": "WhatsApp पर बात करें",
+    "phoneCta": "हमें कॉल करें"
+  },
+  "footer": {
+    "description": "एलिगेंस ब्यूटी लाउंज पर विलासितापूर्ण सौंदर्य का अनुभव लें",
+    "quickLinks": "त्वरित लिंक",
+    "followUs": "हमें फॉलो करें",
+    "contact": "संपर्क",
+    "copyright": "© 2024 एलिगेंस ब्यूटी लाउंज। सभी अधिकार सुरक्षित।",
+    "madeWith": "भारत में ♥ के साथ बनाया गया"
+  }
+}

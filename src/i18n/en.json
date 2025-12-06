@@ -1,0 +1,69 @@
+{
+  "common": {
+    "language": "EN",
+    "languageToggle": "HI",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "getDirections": "Get Directions",
+    "bookOnWhatsapp": "Book on WhatsApp",
+    "messageUs": "Message Us",
+    "viewAll": "View All",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "header": {
+    "home": "Home",
+    "services": "Services",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "logo": "Elegance Beauty Lounge"
+  },
+  "hero": {
+    "tagline": "Where Beauty Meets Artistry",
+    "cta1": "Book on WhatsApp",
+    "cta2": "View Services"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Experience luxury beauty treatments tailored just for you",
+    "viewAll": "View All Services & Pricing",
+    "bookNow": "Book Now"
+  },
+  "gallery": {
+    "title": "Our Work",
+    "subtitle": "Browse our collection of transformative beauty services",
+    "lightbox": "Gallery"
+  },
+  "workingHours": {
+    "title": "Working Hours",
+    "mondayToSaturday": "Monday - Saturday",
+    "sunday": "Sunday"
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Real reviews from real customers"
+  },
+  "location": {
+    "title": "Visit Us",
+    "subtitle": "Find us easily on the map",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "getDirections": "Get Directions on Maps"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "description": "Have questions? Reach out to us on WhatsApp or call us directly",
+    "whatsappCta": "Chat on WhatsApp",
+    "phoneCta": "Call Us"
+  },
+  "footer": {
+    "description": "Experience luxury beauty at Elegance Beauty Lounge",
+    "quickLinks": "Quick Links",
+    "followUs": "Follow Us",
+    "contact": "Contact",
+    "copyright": "© 2024 Elegance Beauty Lounge. All rights reserved.",
+    "madeWith": "Made with ♥ in India"
+  }
+}

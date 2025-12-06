@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant:wght@400;500;600;700&family=Crimson+Text:wght@400;600&family=Dancing+Script:wght@400;500;600;700&family=Allura:wght@400&family=Great+Vibes:wght@400&family=Lora:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply m-0 p-0 text-gray-900 bg-white;
+    font-family: 'Lora', 'Merriweather', serif;
+  }
+
+  .dark {
+    @apply bg-gray-950 text-gray-50;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    font-family: 'Playfair Display', 'Cormorant', serif;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-lg hover:from-rose-600 hover:to-rose-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border-2 border-yellow-500 text-yellow-700 dark:text-yellow-300 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-900/20 transition-colors duration-300 font-medium;
+  }
+
+  .section-padding {
+    @apply py-12 md:py-20 px-4 md:px-6 lg:px-8;
+  }
+
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-rose-500 via-rose-400 to-amber-500 bg-clip-text text-transparent;
+  }
+}
